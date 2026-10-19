@@ -1,6 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { motion } from 'motion/react';
 import { MajorId, MajorProfile, UniversityPTN } from '../../data/mathFmipaData';
 import { ChevronLeft, ChevronRight, Database, RefreshCw, SlidersHorizontal } from 'lucide-react';
+import { staggerCardVariants, staggerContainerVariants } from './motionVariants';
+import { HoverReveal } from '../ui/HoverReveal';
 
 interface Slide05TightnessAnalyticsProps {
   universities: UniversityPTN[];
@@ -25,7 +28,9 @@ export const Slide05TightnessAnalytics: React.FC<Slide05TightnessAnalyticsProps>
 }) => {
   const [majorFilter, setMajorFilter] = useState<MajorId | 'all'>('all');
   const [pathway, setPathway] = useState<'snbt' | 'snbp'>('snbt');
-  const [sortBy, setSortBy] = useState<'tightest' | 'most_applicants' | 'largest_quota' | 'highest_score'>('tightest');
+  const [sortBy, setSortBy] = useState<
+    'tightest' | 'most_applicants' | 'largest_quota' | 'highest_score'
+  >('tightest');
   const [page, setPage] = useState<number>(0);
 
   useEffect(() => {
@@ -100,9 +105,17 @@ export const Slide05TightnessAnalytics: React.FC<Slide05TightnessAnalyticsProps>
   }, [lastSyncedAt]);
 
   return (
-    <div className="h-full flex flex-col justify-between gap-4 overflow-hidden">
+    <motion.div
+      variants={staggerContainerVariants}
+      initial="hidden"
+      animate="visible"
+      className="h-full flex flex-col justify-between gap-4 overflow-hidden"
+    >
       {/* Header & Controls */}
-      <div className="flex flex-wrap items-center justify-between gap-3 bg-[#0F172A] border border-slate-800 rounded-2xl px-6 py-3.5 shrink-0">
+      <motion.div
+        variants={staggerCardVariants}
+        className="flex flex-wrap items-center justify-between gap-3 bg-[#0F172A] border border-slate-800 rounded-2xl px-6 py-3.5 shrink-0"
+      >
         <div>
           <div className="text-xs font-mono text-cyan-400 mb-0.5">
             SLIDE 07 · PEMINAT &amp; KEKETATAN DINAMIS SNPMB (UPDATE #{syncCount} · {formattedSyncTime} WIB)
@@ -179,62 +192,71 @@ export const Slide05TightnessAnalytics: React.FC<Slide05TightnessAnalyticsProps>
             <span>Sinkronisasi</span>
           </button>
         </div>
-      </div>
+      </motion.div>
 
-      {/* Main Split: Left (5 cols) = 3 Big KPIs + Visual Bar Chart, Right (7 cols) = 5-Row Large Paginated Table */}
-      <div className="flex-1 grid grid-cols-12 gap-5 items-stretch overflow-hidden">
+      {/* Main Split: Left (5 cols) = 3 Big KPIs + Flex-1 Visual Bar Chart, Right (7 cols) = 5-Row Full-Height Table */}
+      <div className="flex-1 min-h-0 grid grid-cols-12 gap-5 items-stretch overflow-hidden">
         {/* Left Zone (5 cols) */}
-        <div className="col-span-5 flex flex-col justify-between bg-[#0F172A] border border-slate-800 rounded-2xl p-5 overflow-hidden">
-          <div>
-            {/* 3 Big Summary KPIs */}
-            <div className="grid grid-cols-3 gap-3 mb-4">
-              <div className="p-3.5 rounded-xl bg-slate-900 border border-slate-800">
-                <div className="text-xs text-slate-400">Total Kuota</div>
-                <div className="text-2xl xl:text-3xl font-extrabold font-mono text-white tabular-nums mt-0.5">
-                  {totalQuota.toLocaleString('id-ID')}
-                </div>
-              </div>
-
-              <div className="p-3.5 rounded-xl bg-slate-900 border border-slate-800">
-                <div className="text-xs text-slate-400">Total Peminat</div>
-                <div className="text-2xl xl:text-3xl font-extrabold font-mono text-cyan-400 tabular-nums mt-0.5">
-                  {totalApplicants.toLocaleString('id-ID')}
-                </div>
-              </div>
-
-              <div className="p-3.5 rounded-xl bg-slate-900 border border-slate-800">
-                <div className="text-xs text-slate-400">Rerata Keketatan</div>
-                <div className="text-2xl xl:text-3xl font-extrabold font-mono text-emerald-400 tabular-nums mt-0.5">
-                  {avgTightness}%
-                </div>
+        <motion.div
+          variants={staggerCardVariants}
+          className="col-span-5 flex flex-col justify-between bg-[#0F172A] border border-slate-800 rounded-2xl p-5 overflow-hidden"
+        >
+          {/* 3 Big Summary KPIs */}
+          <div className="grid grid-cols-3 gap-3 shrink-0">
+            <div className="p-3.5 rounded-xl bg-slate-900 border border-slate-800">
+              <div className="text-xs text-slate-400">Total Kuota</div>
+              <div className="text-2xl xl:text-3xl font-extrabold font-mono text-white tabular-nums mt-0.5">
+                {totalQuota.toLocaleString('id-ID')}
               </div>
             </div>
 
-            <div className="flex items-center justify-between text-xs font-mono text-slate-400 mb-2.5">
+            <div className="p-3.5 rounded-xl bg-slate-900 border border-slate-800">
+              <div className="text-xs text-slate-400">Total Peminat</div>
+              <div className="text-2xl xl:text-3xl font-extrabold font-mono text-cyan-400 tabular-nums mt-0.5">
+                {totalApplicants.toLocaleString('id-ID')}
+              </div>
+            </div>
+
+            <div className="p-3.5 rounded-xl bg-slate-900 border border-slate-800">
+              <div className="text-xs text-slate-400">Rerata Keketatan</div>
+              <div className="text-2xl xl:text-3xl font-extrabold font-mono text-emerald-400 tabular-nums mt-0.5">
+                {avgTightness}%
+              </div>
+            </div>
+          </div>
+
+          {/* Flex-1 5 Visual Bars matching current page */}
+          <div className="flex-1 min-h-0 flex flex-col my-3">
+            <div className="flex items-center justify-between text-xs font-mono text-slate-400 mb-2 shrink-0">
               <span>GRAFIK PERBANDINGAN (HALAMAN {safePage + 1})</span>
               <span>Kecil % = Paling Ketat</span>
             </div>
 
-            {/* 5 Visual Bars matching current page */}
-            <div className="space-y-3">
+            <div className="flex-1 min-h-0 flex flex-col gap-2.5">
               {visibleRows.map((row) => {
                 const barWidth = Math.min(100, Math.max(10, row.tightness * 6.5));
                 return (
                   <div
                     key={`${row.ptnId}-${row.majorId}`}
                     onClick={() => onJumpToPredictor(row.ptnId, row.majorId)}
-                    className="p-3 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-cyan-400 cursor-pointer transition-colors"
+                    className="flex-1 min-h-0 px-3.5 py-2 rounded-xl bg-slate-900/85 border border-slate-800 hover:border-cyan-400 cursor-pointer transition-colors flex flex-col justify-center"
                   >
-                    <div className="flex items-center justify-between text-sm xl:text-base mb-1.5">
-                      <div className="font-bold text-white truncate">
-                        <span className="font-mono text-cyan-400 mr-2">{row.ptnCode}</span>
-                        <span>{row.programNameOfficial}</span>
+                    <div className="flex items-center justify-between gap-2 text-sm xl:text-base mb-1.5">
+                      <div className="flex items-center min-w-0 font-bold text-white">
+                        <span className="font-mono text-cyan-400 mr-2 shrink-0">
+                          {row.ptnCode}
+                        </span>
+                        <HoverReveal
+                          text={row.programNameOfficial}
+                          className="truncate"
+                        />
                       </div>
                       <div className="font-mono font-extrabold text-cyan-400 tabular-nums shrink-0">
-                        {row.tightness.toFixed(2)}% <span className="text-slate-400 text-xs">(1:{row.ratioOneTo})</span>
+                        {row.tightness.toFixed(2)}%{' '}
+                        <span className="text-slate-400 text-xs">(1:{row.ratioOneTo})</span>
                       </div>
                     </div>
-                    <div className="w-full h-2.5 bg-slate-950 rounded-sm overflow-hidden">
+                    <div className="w-full h-2 bg-slate-950 rounded-sm overflow-hidden">
                       <div
                         className="h-full transition-all duration-300"
                         style={{ width: `${barWidth}%`, backgroundColor: row.accentHex }}
@@ -246,14 +268,41 @@ export const Slide05TightnessAnalytics: React.FC<Slide05TightnessAnalyticsProps>
             </div>
           </div>
 
-          <div className="pt-2 border-t border-slate-800 flex items-center gap-2 text-xs font-mono text-slate-400">
-            <Database className="w-4 h-4 text-cyan-400 shrink-0" />
-            <span>Sumber Publik: Portal Daya Tampung SNPMB &amp; PDDIKTI</span>
+          <div className="pt-2 border-t border-slate-800 flex items-center justify-between gap-2 text-xs font-mono text-slate-400 shrink-0">
+            <div className="flex items-center gap-2">
+              <Database className="w-4 h-4 text-cyan-400 shrink-0" />
+              <span>Sumber Publik:</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <a
+                href="https://snpmb.bppp.kemdikbud.go.id/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-cyan-400 hover:underline"
+              >
+                Portal SNPMB ↗
+              </a>
+              <a
+                href="https://pddikti.kemdiktisaintek.go.id/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-cyan-400 hover:underline"
+              >
+                PDDIKTI ↗
+              </a>
+            </div>
           </div>
-        </div>
+        </motion.div>
 
-        {/* Right Zone (7 cols): 5-Row Large Paginated Table (Zero Scroll) */}
-        <div className="col-span-7 flex flex-col justify-between bg-[#0F172A] border border-slate-800 rounded-2xl p-5 overflow-hidden">
+        {/* Right Zone (7 cols): 5-Row Full-Height Paginated Grid Table (Zero Dead Space) */}
+        <motion.div
+          variants={staggerCardVariants}
+          key={`table-${majorFilter}-${pathway}-${safePage}-${sortBy}`}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.18 }}
+          className="col-span-7 flex flex-col justify-between bg-[#0F172A] border border-slate-800 rounded-2xl p-5 overflow-hidden"
+        >
           <div className="flex items-center justify-between gap-3 pb-3 border-b border-slate-800 shrink-0">
             <div className="flex items-center gap-2 bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5">
               <SlidersHorizontal className="w-4 h-4 text-cyan-400" />
@@ -266,10 +315,18 @@ export const Slide05TightnessAnalytics: React.FC<Slide05TightnessAnalyticsProps>
                 aria-label="Urutkan Tabel"
                 className="bg-transparent text-sm font-mono font-bold text-slate-100 focus:outline-none"
               >
-                <option value="tightest" className="bg-slate-900">Urut: Keketatan Tertinggi</option>
-                <option value="most_applicants" className="bg-slate-900">Urut: Peminat Terbanyak</option>
-                <option value="largest_quota" className="bg-slate-900">Urut: Kuota Terbesar</option>
-                <option value="highest_score" className="bg-slate-900">Urut: Skor UTBK Tertinggi</option>
+                <option value="tightest" className="bg-slate-900">
+                  Urut: Keketatan Tertinggi
+                </option>
+                <option value="most_applicants" className="bg-slate-900">
+                  Urut: Peminat Terbanyak
+                </option>
+                <option value="largest_quota" className="bg-slate-900">
+                  Urut: Kuota Terbesar
+                </option>
+                <option value="highest_score" className="bg-slate-900">
+                  Urut: Skor UTBK Tertinggi
+                </option>
               </select>
             </div>
 
@@ -297,60 +354,70 @@ export const Slide05TightnessAnalytics: React.FC<Slide05TightnessAnalyticsProps>
             </div>
           </div>
 
-          {/* 5 Oversized Table Rows */}
-          <div className="flex-1 flex flex-col justify-center my-2">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="border-b border-slate-800 text-xs font-mono text-slate-400 uppercase">
-                  <th className="py-2.5 px-3">PTN</th>
-                  <th className="py-2.5 px-3">Program Studi</th>
-                  <th className="py-2.5 px-3 text-right">Kuota</th>
-                  <th className="py-2.5 px-3 text-right">Peminat</th>
-                  <th className="py-2.5 px-3 text-right">Keketatan</th>
-                  <th className="py-2.5 px-3 text-right">Skor UTBK</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-800/80">
-                {visibleRows.map((row) => (
-                  <tr
-                    key={`${row.ptnId}-${row.majorId}`}
-                    onClick={() => onJumpToPredictor(row.ptnId, row.majorId)}
-                    className="hover:bg-slate-800/80 cursor-pointer transition-colors"
-                  >
-                    <td className="py-3.5 px-3 font-mono text-lg xl:text-xl font-extrabold text-cyan-400">
-                      {row.ptnCode}
-                    </td>
-                    <td className="py-3.5 px-3 text-base xl:text-lg font-bold text-white">
-                      <span
-                        className="inline-block w-2.5 h-2.5 rounded-sm mr-2.5"
-                        style={{ backgroundColor: row.accentHex }}
-                      />
-                      {row.programNameOfficial}
-                    </td>
-                    <td className="py-3.5 px-3 text-right font-mono text-base xl:text-lg font-bold text-slate-200 tabular-nums">
+          {/* Full-Height 12-Column Structured Table */}
+          <div className="flex-1 min-h-0 flex flex-col my-2">
+            {/* Table Header */}
+            <div className="grid grid-cols-12 gap-3 px-4 py-2 border-b border-slate-800 text-xs font-mono text-slate-400 uppercase shrink-0">
+              <div className="col-span-2">PTN</div>
+              <div className="col-span-4">Program Studi</div>
+              <div className="col-span-2 text-right">Kuota / Peminat</div>
+              <div className="col-span-2 text-right">Keketatan</div>
+              <div className="col-span-2 text-right">Skor UTBK</div>
+            </div>
+
+            {/* 5 Equal-Height Flex-1 Rows */}
+            <div className="flex-1 min-h-0 flex flex-col gap-2 pt-2">
+              {visibleRows.map((row) => (
+                <div
+                  key={`${row.ptnId}-${row.majorId}`}
+                  onClick={() => onJumpToPredictor(row.ptnId, row.majorId)}
+                  className="flex-1 min-h-0 grid grid-cols-12 gap-3 items-center px-4 py-2 rounded-xl bg-slate-900/75 border border-slate-800/90 hover:bg-slate-800/90 hover:border-cyan-400 cursor-pointer transition-all"
+                >
+                  <div className="col-span-2 font-mono text-lg xl:text-xl font-extrabold text-cyan-400">
+                    {row.ptnCode}
+                  </div>
+                  <div className="col-span-4 min-w-0 flex items-center gap-2.5">
+                    <span
+                      className="w-2.5 h-2.5 rounded-sm shrink-0"
+                      style={{ backgroundColor: row.accentHex }}
+                    />
+                    <HoverReveal
+                      text={row.programNameOfficial}
+                      className="text-base xl:text-lg font-bold text-white truncate"
+                    />
+                  </div>
+                  <div className="col-span-2 text-right font-mono tabular-nums">
+                    <span className="text-base xl:text-lg font-bold text-white">
                       {row.quota}
-                    </td>
-                    <td className="py-3.5 px-3 text-right font-mono text-base xl:text-lg text-slate-300 tabular-nums">
-                      {row.applicants.toLocaleString('id-ID')}
-                    </td>
-                    <td className="py-3.5 px-3 text-right font-mono text-lg xl:text-xl font-extrabold text-cyan-400 tabular-nums">
+                    </span>
+                    <span className="text-xs text-slate-400 ml-1">
+                      / {row.applicants.toLocaleString('id-ID')}
+                    </span>
+                  </div>
+                  <div className="col-span-2 text-right font-mono tabular-nums">
+                    <div className="text-base xl:text-lg font-extrabold text-cyan-400">
                       {row.tightness.toFixed(2)}%
-                    </td>
-                    <td className="py-3.5 px-3 text-right font-mono text-lg xl:text-xl font-extrabold text-emerald-400 tabular-nums">
-                      {row.projectedScore}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                    </div>
+                    <div className="text-[11px] text-slate-400">
+                      Rasio 1 : {row.ratioOneTo}
+                    </div>
+                  </div>
+                  <div className="col-span-2 text-right font-mono text-lg xl:text-xl font-extrabold text-emerald-400 tabular-nums">
+                    {row.projectedScore}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
 
-          <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-xs xl:text-sm text-slate-300 font-medium">
-            <span>Klik baris mana saja untuk langsung menguji peluang kelulusan UTBK</span>
-            <span className="font-mono text-cyan-400">Menampilkan 5 dari {flattenedPrograms.length} prodi</span>
+          <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-xs xl:text-sm text-slate-300 font-medium shrink-0">
+            <span>Data Daya Tampung &amp; Peminat Resmi SNPMB</span>
+            <span className="font-mono text-cyan-400">
+              Menampilkan 5 dari {flattenedPrograms.length} prodi
+            </span>
           </div>
-        </div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 };

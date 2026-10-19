@@ -23,75 +23,41 @@ import { Slide04CampusGallery } from './components/slides/Slide04CampusGallery';
 import { Slide05TightnessAnalytics } from './components/slides/Slide05TightnessAnalytics';
 import { Slide06AdaptiveRecommender } from './components/slides/Slide06AdaptiveRecommender';
 import { Slide07PassingGradePredictor } from './components/slides/Slide07PassingGradePredictor';
-import { ChevronLeft, ChevronRight, Presentation } from 'lucide-react';
+import {
+  SlideTransitionStyle,
+  slideStageVariants,
+} from './components/slides/motionVariants';
+import {
+  Box,
+  ChevronLeft,
+  ChevronRight,
+  Layers,
+  Maximize2,
+  Minimize2,
+} from 'lucide-react';
 
 interface SlideMeta {
   index: number;
   code: string;
   shortLabel: string;
-  teacherGuide: string;
 }
 
 const SLIDES_METADATA: SlideMeta[] = [
-  {
-    index: 0,
-    code: '01',
-    shortLabel: '01. Ekosistem',
-    teacherGuide: 'Buka dengan 5 cabang utama Departemen Matematika FMIPA (klik tiap jurusan di kiri).',
-  },
-  {
-    index: 1,
-    code: '02',
-    shortLabel: '02. Syarat',
-    teacherGuide: 'Soroti target skor Penalaran Matematika UTBK, mapel SNBP, dan penyetaraan PAI Aktuaria.',
-  },
-  {
-    index: 2,
-    code: '03',
-    shortLabel: '03. Kurikulum',
-    teacherGuide: 'Klik Tahun 1 s.d. Tahun 4 untuk memperlihatkan 4 mata kuliah inti di setiap tingkat.',
-  },
-  {
-    index: 3,
-    code: '04',
-    shortLabel: '04. Prospek',
-    teacherGuide: 'Tunjukkan 4 peran karier utama beserta perbandingan gaji Fresh Graduate vs Senior.',
-  },
-  {
-    index: 4,
-    code: '05',
-    shortLabel: '05. Evolusi',
-    teacherGuide: 'Bandingkan pergeseran kurikulum dan alat komputasi dari 1980 hingga era AI 2026+.',
-  },
-  {
-    index: 5,
-    code: '06',
-    shortLabel: '06. 10 PTN',
-    teacherGuide: 'Klik 10 tombol PTN di kanan atas untuk melihat gedung departemen dan prodi yang dibuka.',
-  },
-  {
-    index: 6,
-    code: '07',
-    shortLabel: '07. Keketatan',
-    teacherGuide: 'Gunakan filter jurusan dan halaman untuk membandingkan kuota serta rasio keketatan SNPMB.',
-  },
-  {
-    index: 7,
-    code: '08',
-    shortLabel: '08. Jika-Maka',
-    teacherGuide: 'Pilih kombinasi minat siswa di kiri untuk memicu rumus logika JIKA-MAKA secara langsung.',
-  },
-  {
-    index: 8,
-    code: '09',
-    shortLabel: '09. Prediksi',
-    teacherGuide: 'Geser skor Tryout UTBK siswa untuk melihat peluang lulus terhadap tren Passing Grade.',
-  },
+  { index: 0, code: '01', shortLabel: '01. Ekosistem' },
+  { index: 1, code: '02', shortLabel: '02. Syarat' },
+  { index: 2, code: '03', shortLabel: '03. Kurikulum' },
+  { index: 3, code: '04', shortLabel: '04. Prospek' },
+  { index: 4, code: '05', shortLabel: '05. Evolusi' },
+  { index: 5, code: '06', shortLabel: '06. 10 PTN' },
+  { index: 6, code: '07', shortLabel: '07. Keketatan' },
+  { index: 7, code: '08', shortLabel: '08. Jika-Maka' },
+  { index: 8, code: '09', shortLabel: '09. Prediksi' },
 ];
 
 export default function App() {
   const [activeSlide, setActiveSlide] = useState<number>(0);
   const [slideDirection, setSlideDirection] = useState<number>(1);
+  const [transitionStyle, setTransitionStyle] = useState<SlideTransitionStyle>('cube');
   const [selectedMajorId, setSelectedMajorId] = useState<MajorId>('matematika');
   const [predictorTarget, setPredictorTarget] = useState<{
     ptnId: string;
@@ -101,7 +67,7 @@ export default function App() {
     majorId: 'aktuaria',
   });
 
-  const [appMode, setAppMode] = useState<'teacher' | 'student'>('teacher');
+  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
 
   const [universitiesData, setUniversitiesData] =
     useState<UniversityPTN[]>(UNIVERSITIES_PTN);
@@ -110,6 +76,22 @@ export default function App() {
   );
   const [syncCount, setSyncCount] = useState<number>(1);
   const [isSyncing, setIsSyncing] = useState<boolean>(false);
+
+  useEffect(() => {
+    const onFullscreenChange = () => {
+      setIsFullscreen(Boolean(document.fullscreenElement));
+    };
+    document.addEventListener('fullscreenchange', onFullscreenChange);
+    return () => document.removeEventListener('fullscreenchange', onFullscreenChange);
+  }, []);
+
+  const toggleFullscreen = useCallback(() => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen?.().catch(() => {});
+    } else {
+      document.exitFullscreen?.().catch(() => {});
+    }
+  }, []);
 
   useEffect(() => {
     fetch('/api/admissions')
@@ -128,17 +110,44 @@ export default function App() {
     setIsSyncing(true);
     try {
       const res = await fetch('/api/admissions/refresh', { method: 'POST' });
-      if (res.ok) {
+      const contentType = res.headers.get('content-type') || '';
+      if (res.ok && contentType.includes('application/json')) {
         const data = await res.json();
         if (Array.isArray(data.universities)) {
           setUniversitiesData(data.universities);
           setLastSyncedAt(data.lastSyncedAt);
           setSyncCount(data.syncCount);
+          return;
         }
       }
+      throw new Error('Static hosting fallback');
     } catch {
+      // Fallback for static hosting (e.g. GitHub Pages) without Node/Express backend
+      setSyncCount((prevCount) => {
+        const nextCount = prevCount + 1;
+        setUniversitiesData((prevUnis) =>
+          prevUnis.map((uni) => ({
+            ...uni,
+            programs: uni.programs.map((prog) => {
+              const delta = ((nextCount + prog.dayaTampung2026) % 5) - 2;
+              const updatedPeminat = Math.max(
+                prog.dayaTampung2026 * 3,
+                prog.peminat2025 + delta
+              );
+              const updatedKeketatan = Number(
+                ((prog.dayaTampung2026 / updatedPeminat) * 100).toFixed(2)
+              );
+              return {
+                ...prog,
+                peminat2025: updatedPeminat,
+                keketatan2025Percent: updatedKeketatan,
+              };
+            }),
+          }))
+        );
+        return nextCount;
+      });
       setLastSyncedAt(new Date().toISOString());
-      setSyncCount((c) => c + 1);
     } finally {
       setIsSyncing(false);
     }
@@ -163,7 +172,7 @@ export default function App() {
     [jumpToSlide]
   );
 
-  // Full Keyboard Navigation (Arrows, Space, 1-9, M)
+  // Keyboard Navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       const tag = (e.target as HTMLElement)?.tagName;
@@ -180,17 +189,18 @@ export default function App() {
       } else if (e.key >= '1' && e.key <= '9') {
         e.preventDefault();
         jumpToSlide(Number(e.key) - 1);
-      } else if (e.key === 'm' || e.key === 'M') {
+      } else if (e.key === 't' || e.key === 'T') {
         e.preventDefault();
-        setAppMode((prev) => (prev === 'teacher' ? 'student' : 'teacher'));
+        setTransitionStyle((prev) => (prev === 'cube' ? 'fade-scale' : 'cube'));
+      } else if (e.key === 'f' || e.key === 'F') {
+        e.preventDefault();
+        toggleFullscreen();
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [activeSlide, jumpToSlide]);
-
-  const currentSlideMeta = SLIDES_METADATA[activeSlide];
+  }, [activeSlide, jumpToSlide, toggleFullscreen]);
 
   return (
     <div className="h-screen w-screen overflow-hidden bg-[#0B1120] text-slate-100 flex flex-col justify-between">
@@ -288,28 +298,29 @@ export default function App() {
         {/* Zone 3: 1 primary action button */}
         <div className="flex items-center shrink-0">
           <button
-            onClick={() =>
-              setAppMode((prev) => (prev === 'teacher' ? 'student' : 'teacher'))
-            }
+            onClick={() => jumpToSlide(8)}
             className="px-3.5 py-1.5 text-xs font-bold text-slate-950 bg-cyan-400 hover:bg-cyan-300 rounded-lg transition-colors whitespace-nowrap shrink-0"
           >
-            {appMode === 'teacher' ? 'Mode Guru (Aktif)' : 'Mode Siswa (Aktif)'}
+            Simulator UTBK
           </button>
         </div>
       </header>
 
-      {/* Fullscreen Zero-Scroll Slide Stage */}
-      <main className="flex-1 w-full max-w-[1440px] mx-auto px-6 py-4 overflow-hidden flex flex-col">
-        <div className="relative flex-1 w-full h-full overflow-hidden">
-          <AnimatePresence mode="wait" custom={slideDirection}>
+      {/* Fullscreen Zero-Scroll Slide Stage with 3D Keynote Perspective */}
+      <main className="flex-1 w-full max-w-[1680px] mx-auto px-6 py-4 overflow-hidden flex flex-col">
+        <div className="relative flex-1 w-full h-full overflow-hidden [perspective:1600px]">
+          <AnimatePresence
+            mode="wait"
+            custom={{ direction: slideDirection, style: transitionStyle }}
+          >
             <motion.div
-              key={activeSlide}
-              custom={slideDirection}
-              initial={{ opacity: 0, x: slideDirection * 24 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: slideDirection * -24 }}
-              transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
-              className="w-full h-full overflow-hidden"
+              key={`${activeSlide}-${transitionStyle}`}
+              custom={{ direction: slideDirection, style: transitionStyle }}
+              variants={slideStageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              className="w-full h-full overflow-hidden [transform-style:preserve-3d] will-change-transform"
             >
               {activeSlide === 0 && (
                 <Slide01Ecosystem
@@ -402,43 +413,68 @@ export default function App() {
         </div>
       </main>
 
-      {/* Slim Bottom Presentation Dock (h-12 / 48px) */}
-      <footer className="h-12 shrink-0 border-t border-slate-800/90 bg-[#0F172A] px-6 flex items-center justify-between gap-4">
-        {/* Left: 1-line Teacher Guide or Keyboard Hint */}
-        <div className="flex items-center gap-2 min-w-0 flex-1">
-          <Presentation className="w-4 h-4 text-cyan-400 shrink-0" />
-          <span className="text-xs font-mono text-cyan-400 font-bold shrink-0">
-            {appMode === 'teacher' ? `PANDUAN GURU (${currentSlideMeta.code}/09):` : 'NAVIGASI CEPAT:'}
-          </span>
-          <span className="text-xs text-slate-300 truncate">
-            {appMode === 'teacher'
-              ? currentSlideMeta.teacherGuide
-              : 'Gunakan tombol panah ← →, Spasi, atau angka 1–9 untuk berpindah slide.'}
-          </span>
-        </div>
-
-        {/* Center: 9 Slide Stepper Pills */}
-        <div className="flex items-center gap-1 shrink-0">
+      {/* Pure Keynote Bottom Dock (h-12 / 48px) — Slide Stepper + Transition Selector + Prev/Next */}
+      <footer className="h-12 shrink-0 border-t border-slate-800/90 bg-[#0F172A] px-6 flex items-center justify-between gap-4 overflow-hidden">
+        {/* Left: 9 Slide Stepper Buttons (Numbers only, active shows full title, zero scrollbar) */}
+        <div className="flex items-center gap-1.5 shrink-0">
           {SLIDES_METADATA.map((s) => {
             const active = s.index === activeSlide;
             return (
               <button
                 key={s.code}
                 onClick={() => jumpToSlide(s.index)}
-                className={`px-2.5 py-1 rounded-md text-xs font-mono font-bold transition-colors whitespace-nowrap shrink-0 ${
+                className={`py-1.5 rounded-lg text-xs font-mono font-bold transition-all whitespace-nowrap shrink-0 ${
                   active
-                    ? 'bg-cyan-400 text-slate-950'
-                    : 'bg-slate-900 text-slate-400 hover:text-white hover:bg-slate-800'
+                    ? 'bg-cyan-400 text-slate-950 px-3.5'
+                    : 'bg-slate-900 text-slate-400 hover:text-white hover:bg-slate-800 px-2.5'
                 }`}
               >
-                {s.shortLabel}
+                {active ? s.shortLabel : s.code}
               </button>
             );
           })}
         </div>
 
-        {/* Right: Prev / Next Slide Buttons */}
-        <div className="flex items-center gap-1.5 shrink-0">
+        {/* Right: Transition Effect Selector + Fullscreen + Prev / Next Slide Buttons */}
+        <div className="flex items-center gap-2 shrink-0">
+          {/* Dual Transition Selector (Cube 3D vs Fade-Scale) */}
+          <div className="flex items-center gap-1 p-0.5 bg-slate-950 border border-slate-800 rounded-lg">
+            <button
+              onClick={() => setTransitionStyle('cube')}
+              className={`px-2.5 py-1 rounded text-xs font-mono font-bold transition-colors flex items-center gap-1 whitespace-nowrap ${
+                transitionStyle === 'cube'
+                  ? 'bg-cyan-400 text-slate-950'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              <Box className="w-3.5 h-3.5" />
+              <span>Cube 3D</span>
+            </button>
+            <button
+              onClick={() => setTransitionStyle('fade-scale')}
+              className={`px-2.5 py-1 rounded text-xs font-mono font-bold transition-colors flex items-center gap-1 whitespace-nowrap ${
+                transitionStyle === 'fade-scale'
+                  ? 'bg-cyan-400 text-slate-950'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              <Layers className="w-3.5 h-3.5" />
+              <span>Fade-Scale</span>
+            </button>
+          </div>
+
+          <button
+            onClick={toggleFullscreen}
+            aria-label="Layar Penuh"
+            className="p-1.5 rounded-md bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 hover:text-white transition-colors"
+          >
+            {isFullscreen ? (
+              <Minimize2 className="w-3.5 h-3.5" />
+            ) : (
+              <Maximize2 className="w-3.5 h-3.5" />
+            )}
+          </button>
+
           <button
             onClick={() => jumpToSlide(activeSlide - 1)}
             disabled={activeSlide === 0}

@@ -100,17 +100,21 @@ async function startServer() {
     });
   });
 
-  // POST /api/predict - Admission probability & passing grade trend analysis
+  // POST /api/predict - Admission probability & passing grade trend analysis (7 Official Subtests)
   app.post('/api/predict', (req, res) => {
     const {
       ptnId = 'ui',
       majorId = 'aktuaria',
       scores = {
-        penalaranMatematika: 710,
-        pengetahuanKuantitatif: 700,
-        penalaranUmum: 685,
-        literasiIndonesiaInggris: 675,
+        pm: 730,
+        pk: 715,
+        pu: 700,
+        lbe: 690,
+        lbi: 685,
+        ppu: 675,
+        pbm: 670,
       },
+      scoringMode = 'major-weighted',
       hasNationalAchievement = false,
     } = req.body || {};
 
@@ -118,15 +122,29 @@ async function startServer() {
     const program =
       uni.programs.find((p) => p.majorId === majorId) || uni.programs[0];
 
-    // Calculate weighted UTBK composite score for FMIPA Departemen Matematika
-    // Penalaran Matematika (38%), Pengetahuan Kuantitatif (32%), Penalaran Umum (18%), Literasi (12%)
-    const weightedScore = Math.round(
-      scores.penalaranMatematika * 0.38 +
-        scores.pengetahuanKuantitatif * 0.32 +
-        scores.penalaranUmum * 0.18 +
-        scores.literasiIndonesiaInggris * 0.12 +
-        (hasNationalAchievement ? 8 : 0)
+    const majorWeights: Record<string, Record<string, number>> = {
+      matematika: { pm: 0.28, pk: 0.26, pu: 0.18, lbe: 0.08, lbi: 0.07, ppu: 0.07, pbm: 0.06 },
+      aktuaria: { pm: 0.30, pk: 0.26, pu: 0.16, lbe: 0.11, lbi: 0.07, ppu: 0.05, pbm: 0.05 },
+      statistika: { pm: 0.27, pk: 0.25, pu: 0.18, lbi: 0.10, lbe: 0.09, ppu: 0.06, pbm: 0.05 },
+      'sains-data': { pk: 0.26, pm: 0.25, pu: 0.20, lbe: 0.11, lbi: 0.07, ppu: 0.06, pbm: 0.05 },
+      ai: { pk: 0.25, pm: 0.24, pu: 0.22, lbe: 0.12, lbi: 0.06, ppu: 0.06, pbm: 0.05 },
+    };
+
+    const weights = majorWeights[program.majorId] || majorWeights.matematika;
+    const subtestKeys = ['pm', 'pk', 'pu', 'lbe', 'lbi', 'ppu', 'pbm'];
+
+    const bonus = hasNationalAchievement ? 8 : 0;
+    const majorWeightedScore = Math.round(
+      subtestKeys.reduce((acc, k) => acc + (Number(scores[k]) || 680) * (weights[k] || 0), 0) +
+        bonus
     );
+    const pureAverageScore = Math.round(
+      subtestKeys.reduce((acc, k) => acc + (Number(scores[k]) || 680), 0) / subtestKeys.length +
+        bonus
+    );
+
+    const weightedScore =
+      scoringMode === 'pure-average' ? pureAverageScore : majorWeightedScore;
 
     const { year2022, year2023, year2024, year2025, projected2026 } = program.passingGradeHistory;
     const annualSlope = Number((((year2025 - year2022) / 3)).toFixed(1));

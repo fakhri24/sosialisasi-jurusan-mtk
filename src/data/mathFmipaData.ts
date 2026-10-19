@@ -147,116 +147,19 @@ function createCampusArchitectureSvg(config: {
   city: string;
   styleType: 'rotunda' | 'colonial-modern' | 'classical-columns' | 'futuristic-tower' | 'botanical-atrium';
 }): string {
-  const { bgStart, bgEnd, accent, secondaryAccent, uniCode, buildingName, city, styleType } = config;
-
-  let structureSvg = '';
-  if (styleType === 'rotunda') {
-    structureSvg = `
-      <ellipse cx="400" cy="390" rx="340" ry="45" fill="${accent}" fill-opacity="0.12" />
-      <rect x="130" y="190" width="540" height="150" rx="6" fill="#1E293B" stroke="${accent}" stroke-width="1.5" stroke-opacity="0.5"/>
-      <line x1="130" y1="225" x2="670" y2="225" stroke="#475569" stroke-width="1.5"/>
-      <line x1="130" y1="260" x2="670" y2="260" stroke="#475569" stroke-width="1.5"/>
-      <line x1="130" y1="295" x2="670" y2="295" stroke="#475569" stroke-width="1.5"/>
-      <path d="M310 135 C310 110, 490 110, 490 135 L490 340 L310 340 Z" fill="#0F172A" stroke="${accent}" stroke-width="2"/>
-      <ellipse cx="400" cy="135" rx="90" ry="20" fill="#1E293B" stroke="${accent}" stroke-width="2"/>
-      <rect x="335" y="165" width="32" height="45" rx="3" fill="${accent}" fill-opacity="0.35"/>
-      <rect x="384" y="165" width="32" height="45" rx="3" fill="${secondaryAccent}" fill-opacity="0.45"/>
-      <rect x="433" y="165" width="32" height="45" rx="3" fill="${accent}" fill-opacity="0.35"/>
-      <rect x="165" y="205" width="110" height="16" rx="2" fill="${accent}" fill-opacity="0.25"/>
-      <rect x="525" y="205" width="110" height="16" rx="2" fill="${accent}" fill-opacity="0.25"/>
-      <rect x="165" y="240" width="110" height="16" rx="2" fill="${secondaryAccent}" fill-opacity="0.25"/>
-      <rect x="525" y="240" width="110" height="16" rx="2" fill="${secondaryAccent}" fill-opacity="0.25"/>
-    `;
-  } else if (styleType === 'colonial-modern') {
-    structureSvg = `
-      <path d="M110 230 L260 130 L540 130 L690 230 Z" fill="#1E293B" stroke="${accent}" stroke-width="2"/>
-      <path d="M250 160 L400 85 L550 160 Z" fill="#0F172A" stroke="${secondaryAccent}" stroke-width="2"/>
-      <rect x="145" y="230" width="510" height="120" fill="#0F172A" stroke="#334155" stroke-width="2"/>
-      <rect x="180" y="230" width="18" height="120" fill="#334155"/>
-      <rect x="250" y="230" width="18" height="120" fill="#334155"/>
-      <rect x="320" y="230" width="18" height="120" fill="#334155"/>
-      <rect x="462" y="230" width="18" height="120" fill="#334155"/>
-      <rect x="532" y="230" width="18" height="120" fill="#334155"/>
-      <rect x="602" y="230" width="18" height="120" fill="#334155"/>
-      <rect x="360" y="245" width="80" height="105" rx="40" fill="${accent}" fill-opacity="0.28" stroke="${accent}" stroke-width="1.5"/>
-    `;
-  } else if (styleType === 'classical-columns') {
-    structureSvg = `
-      <polygon points="220,145 400,75 580,145" fill="#1E293B" stroke="${accent}" stroke-width="2"/>
-      <rect x="120" y="185" width="560" height="165" fill="#0F172A" stroke="#334155" stroke-width="1.5"/>
-      <rect x="235" y="145" width="330" height="205" fill="#1E293B" stroke="${accent}" stroke-width="1.5"/>
-      <rect x="265" y="155" width="16" height="195" fill="#475569"/>
-      <rect x="325" y="155" width="16" height="195" fill="#475569"/>
-      <rect x="459" y="155" width="16" height="195" fill="#475569"/>
-      <rect x="519" y="155" width="16" height="195" fill="#475569"/>
-      <rect x="368" y="210" width="64" height="140" fill="${accent}" fill-opacity="0.3" stroke="${secondaryAccent}" stroke-width="1.5"/>
-      <rect x="145" y="215" width="65" height="28" fill="${secondaryAccent}" fill-opacity="0.25"/>
-      <rect x="590" y="215" width="65" height="28" fill="${secondaryAccent}" fill-opacity="0.25"/>
-      <rect x="145" y="265" width="65" height="28" fill="${accent}" fill-opacity="0.25"/>
-      <rect x="590" y="265" width="65" height="28" fill="${accent}" fill-opacity="0.25"/>
-    `;
-  } else if (styleType === 'futuristic-tower') {
-    structureSvg = `
-      <rect x="115" y="220" width="570" height="130" rx="4" fill="#1E293B" stroke="#334155" stroke-width="1.5"/>
-      <rect x="295" y="75" width="210" height="275" rx="6" fill="#0F172A" stroke="${accent}" stroke-width="2"/>
-      <line x1="330" y1="75" x2="330" y2="350" stroke="${accent}" stroke-width="1" stroke-opacity="0.4"/>
-      <line x1="365" y1="75" x2="365" y2="350" stroke="${accent}" stroke-width="1" stroke-opacity="0.4"/>
-      <line x1="400" y1="75" x2="400" y2="350" stroke="${accent}" stroke-width="1" stroke-opacity="0.4"/>
-      <line x1="435" y1="75" x2="435" y2="350" stroke="${accent}" stroke-width="1" stroke-opacity="0.4"/>
-      <line x1="470" y1="75" x2="470" y2="350" stroke="${accent}" stroke-width="1" stroke-opacity="0.4"/>
-      <rect x="320" y="105" width="160" height="22" rx="3" fill="${secondaryAccent}" fill-opacity="0.35"/>
-      <rect x="320" y="145" width="160" height="22" rx="3" fill="${accent}" fill-opacity="0.3"/>
-      <rect x="320" y="185" width="160" height="22" rx="3" fill="${secondaryAccent}" fill-opacity="0.35"/>
-      <rect x="320" y="225" width="160" height="22" rx="3" fill="${accent}" fill-opacity="0.3"/>
-    `;
-  } else {
-    structureSvg = `
-      <path d="M140 350 L140 200 L290 140 L510 140 L660 200 L660 350 Z" fill="#1E293B" stroke="${accent}" stroke-width="2"/>
-      <polygon points="290,140 400,85 510,140" fill="${accent}" fill-opacity="0.22" stroke="${secondaryAccent}" stroke-width="2"/>
-      <line x1="290" y1="140" x2="290" y2="350" stroke="${accent}" stroke-width="1.5"/>
-      <line x1="510" y1="140" x2="510" y2="350" stroke="${accent}" stroke-width="1.5"/>
-      <line x1="400" y1="85" x2="400" y2="350" stroke="${secondaryAccent}" stroke-width="1.5" stroke-opacity="0.6"/>
-      <rect x="315" y="170" width="70" height="55" rx="4" fill="${accent}" fill-opacity="0.3"/>
-      <rect x="415" y="170" width="70" height="55" rx="4" fill="${secondaryAccent}" fill-opacity="0.3"/>
-      <rect x="315" y="240" width="70" height="55" rx="4" fill="${secondaryAccent}" fill-opacity="0.25"/>
-      <rect x="415" y="240" width="70" height="55" rx="4" fill="${accent}" fill-opacity="0.25"/>
-    `;
-  }
-
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450">
-    <defs>
-      <linearGradient id="sky" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="${bgStart}" />
-        <stop offset="100%" stop-color="${bgEnd}" />
-      </linearGradient>
-      <radialGradient id="glow" cx="50%" cy="35%" r="55%">
-        <stop offset="0%" stop-color="${accent}" stop-opacity="0.28" />
-        <stop offset="100%" stop-color="${bgEnd}" stop-opacity="0" />
-      </radialGradient>
-    </defs>
-    <rect width="800" height="450" fill="url(#sky)" />
-    <rect width="800" height="450" fill="url(#glow)" />
-    <g stroke="#334155" stroke-width="0.5" stroke-opacity="0.35">
-      <line x1="0" y1="90" x2="800" y2="90" />
-      <line x1="0" y1="180" x2="800" y2="180" />
-      <line x1="0" y1="270" x2="800" y2="270" />
-      <line x1="160" y1="0" x2="160" y2="450" />
-      <line x1="320" y1="0" x2="320" y2="450" />
-      <line x1="480" y1="0" x2="480" y2="450" />
-      <line x1="640" y1="0" x2="640" y2="450" />
-    </g>
-    <circle cx="85" cy="310" r="45" fill="#064E3B" fill-opacity="0.55" />
-    <circle cx="120" cy="325" r="35" fill="#047857" fill-opacity="0.45" />
-    <circle cx="715" cy="310" r="48" fill="#064E3B" fill-opacity="0.55" />
-    <circle cx="680" cy="325" r="36" fill="#047857" fill-opacity="0.45" />
-    ${structureSvg}
-    <rect x="0" y="350" width="800" height="100" fill="#090D16" />
-    <line x1="0" y1="350" x2="800" y2="350" stroke="${accent}" stroke-width="2" stroke-opacity="0.6" />
-    <text x="36" y="48" fill="${accent}" font-family="monospace" font-size="16" font-weight="bold" letter-spacing="2">${uniCode} · ${city.toUpperCase()}</text>
-    <text x="36" y="398" fill="#F8FAFC" font-family="sans-serif" font-size="22" font-weight="bold">${buildingName}</text>
-  </svg>`;
-
-  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+  const realPhotoMap: Record<string, string> = {
+    UI: '/images/ptn/ui-campus.jpg',
+    ITB: '/images/ptn/itb-campus.jpg',
+    UGM: '/images/ptn/ugm-campus.jpg',
+    ITS: '/images/ptn/its-mipa.jpg',
+    IPB: '/images/ptn/ipb-campus.jpg',
+    UNAIR: '/images/ptn/unair-campus.jpg',
+    UNPAD: '/images/ptn/unpad-campus.jpg',
+    UB: '/images/ptn/ub-campus.jpg',
+    UNDIP: '/images/ptn/undip-campus.jpg',
+    UNS: '/images/ptn/uns-campus.jpg',
+  };
+  return realPhotoMap[config.uniCode] || '/images/ptn/ui-campus.jpg';
 }
 
 export const MAJORS_DATA: MajorProfile[] = [
@@ -438,42 +341,42 @@ export const MAJORS_DATA: MajorProfile[] = [
     ],
     careers: [
       {
-        role: 'Quantitative Researcher (Quant)',
-        industry: 'Investment Bank & Sekuritas',
-        entrySalaryRp: 'Rp 12 – 22 Jt',
-        seniorSalaryRp: 'Rp 45 – 95+ Jt',
-        demandGrowth2030: '+28%',
-        coreSkill: 'Kalkulus Stokastik & Algoritma Pasar',
+        role: 'Quantitative Researcher / Analyst',
+        industry: ' Sekuritas, Perbankan & Fintech (WEF 2025)',
+        entrySalaryRp: 'Rp 9 – 16 Jt',
+        seniorSalaryRp: 'Rp 35 – 75+ Jt',
+        demandGrowth2030: '+41% (WEF)',
+        coreSkill: 'Kalkulus Stokastik & Pemodelan Risiko',
       },
       {
-        role: 'Cryptographer & Cyber Mathematician',
-        industry: 'Keamanan Siber & Perbankan',
-        entrySalaryRp: 'Rp 11 – 18 Jt',
-        seniorSalaryRp: 'Rp 35 – 75 Jt',
-        demandGrowth2030: '+35%',
-        coreSkill: 'Aljabar Abstrak & Enkripsi Data',
-      },
-      {
-        role: 'Operations Research Analyst',
-        industry: 'Logistik, Penerbangan & E-Commerce',
+        role: 'Cryptographer & Cyber Security Analyst',
+        industry: 'Keamanan Siber, BSSN & Perbankan Digital',
         entrySalaryRp: 'Rp 9 – 15 Jt',
-        seniorSalaryRp: 'Rp 28 – 55 Jt',
-        demandGrowth2030: '+24%',
-        coreSkill: 'Optimasi Rute & Rantai Pasok',
+        seniorSalaryRp: 'Rp 30 – 65 Jt',
+        demandGrowth2030: '+53% (WEF)',
+        coreSkill: 'Aljabar Abstrak, Enkripsi & Kriptografi',
       },
       {
-        role: 'Peneliti Komputasi / Akademisi',
-        industry: 'Universitas, BRIN & Riset Global',
+        role: 'Operations Research & Supply Chain Analyst',
+        industry: 'Logistik, Penerbangan, BUMN & E-Commerce',
         entrySalaryRp: 'Rp 8 – 13 Jt',
-        seniorSalaryRp: 'Rp 22 – 45 Jt',
-        demandGrowth2030: '+18%',
-        coreSkill: 'Pemodelan Sistem & Publikasi Ilmiah',
+        seniorSalaryRp: 'Rp 25 – 50 Jt',
+        demandGrowth2030: '+35% (WEF)',
+        coreSkill: 'Optimasi Rute, Riset Operasi & Simulasi',
+      },
+      {
+        role: 'Peneliti Sains Komputasi & Akademisi',
+        industry: 'Perguruan Tinggi, BRIN & Lembaga Riset',
+        entrySalaryRp: 'Rp 7 – 12 Jt',
+        seniorSalaryRp: 'Rp 20 – 42 Jt',
+        demandGrowth2030: '+24% (WEF)',
+        coreSkill: 'Pemodelan Persamaan Diferensial & Komputasi',
       },
     ],
     teacherTalkingPoints: [
-      'Bukan prodi keguruan (FKIP), melainkan ilmuwan pemodel sistem.',
-      'Fondasi paling fleksibel untuk beralih ke AI atau Finansial.',
-      'Kuota PTN besar dengan keketatan paling rasional (6%–13%).',
+      'Mapel Pendukung SNBP Resmi: Matematika Tingkat Lanjut (Kepmendikdasmen 102/M/2025).',
+      'Kuota SNBT besar (ITS 80 kursi, UNDIP 69, UB 60) dengan keketatan rasional 7%–13%.',
+      'Fondasi paling fleksibel untuk lanjut ke riset AI, Quant Finance, maupun Aktuaria.',
     ],
   },
   {
@@ -493,12 +396,12 @@ export const MAJORS_DATA: MajorProfile[] = [
       'Mengejar sertifikasi profesi bergaji tinggi yang jelas',
     ],
     specialRequirements: {
-      utbkAvgRange: [685, 755],
-      minMathReasoning: 715,
-      minQuantitative: 700,
-      snbpSupportingSubjects: ['Matematika Lanjut', 'Matematika Wajib', 'Ekonomi'],
+      utbkAvgRange: [675, 745],
+      minMathReasoning: 710,
+      minQuantitative: 695,
+      snbpSupportingSubjects: ['Matematika Tingkat Lanjut', 'Matematika Wajib', 'Ekonomi'],
       physicalAndHealthNotes: 'Bebas syarat buta warna di seluruh PTN',
-      certificationOrSpecialTest: 'Penyetaraan otomatis 5–7 modul ujian profesi PAI',
+      certificationOrSpecialTest: 'Penyetaraan resmi 5–7 modul ujian profesi PAI (A10–A70)',
       codingIntensity: 50,
       mathAbstraction: 75,
       businessFinanceFocus: 96,
@@ -654,42 +557,42 @@ export const MAJORS_DATA: MajorProfile[] = [
     ],
     careers: [
       {
-        role: 'Appointed Actuary (FSAI / ASAI)',
-        industry: 'Asuransi Jiwa, Umum & Reasuransi',
-        entrySalaryRp: 'Rp 10 – 18 Jt',
-        seniorSalaryRp: 'Rp 50 – 120+ Jt',
-        demandGrowth2030: '+32%',
-        coreSkill: 'Lisensi Profesi PAI & Valuasi Klaim',
+        role: 'Actuarial Analyst (ASAI) → Appointed Actuary (FSAI)',
+        industry: 'Asuransi Jiwa, Umum & Reasuransi (Data PAI)',
+        entrySalaryRp: 'Rp 10 – 22 Jt (ASAI)',
+        seniorSalaryRp: 'Rp 35 – 100+ Jt (FSAI)',
+        demandGrowth2030: '+41% (WEF)',
+        coreSkill: 'Lisensi Profesi PAI & Valuasi Cadangan Klaim',
       },
       {
         role: 'Enterprise & Credit Risk Manager',
-        industry: 'Perbankan Besar & Fintech',
+        industry: 'Perbankan Besar, Fintech & Multifinance',
+        entrySalaryRp: 'Rp 9 – 15 Jt',
+        seniorSalaryRp: 'Rp 30 – 65 Jt',
+        demandGrowth2030: '+40% (WEF)',
+        coreSkill: 'Pemodelan Risiko Kredit, Basel III & Stress Test',
+      },
+      {
+        role: 'Konsultan Aktuaria & Imbalan Kerja',
+        industry: 'Big 4 Advisory (PwC, EY, Deloitte, KPMG)',
         entrySalaryRp: 'Rp 10 – 16 Jt',
         seniorSalaryRp: 'Rp 35 – 75 Jt',
-        demandGrowth2030: '+29%',
-        coreSkill: 'Pemodelan Risiko Kredit & Stress Test',
+        demandGrowth2030: '+36% (WEF)',
+        coreSkill: 'Valuasi Dana Pensiun & PSAK 117 / IFRS 17',
       },
       {
-        role: 'Konsultan Aktuaria & Dana Pensiun',
-        industry: 'Big 4 Advisory & Konsultan Global',
-        entrySalaryRp: 'Rp 11 – 17 Jt',
-        seniorSalaryRp: 'Rp 40 – 85 Jt',
-        demandGrowth2030: '+26%',
-        coreSkill: 'Valuasi Imbalan Kerja & Korporat',
-      },
-      {
-        role: 'Pengawas Risiko Keuangan Negara',
-        industry: 'OJK, Bank Indonesia & Kemenkeu',
-        entrySalaryRp: 'Rp 12 – 19 Jt',
-        seniorSalaryRp: 'Rp 30 – 65 Jt',
-        demandGrowth2030: '+22%',
-        coreSkill: 'Audit Solvabilitas & Stabilitas Sistem',
+        role: 'Pengawas Risiko Keuangan & Asuransi',
+        industry: 'OJK, Bank Indonesia, LPS & BPJS',
+        entrySalaryRp: 'Rp 10 – 17 Jt',
+        seniorSalaryRp: 'Rp 28 – 60 Jt',
+        demandGrowth2030: '+28% (OJK)',
+        coreSkill: 'Audit Solvabilitas (RBC) & Stabilitas Keuangan',
       },
     ],
     teacherTalkingPoints: [
-      'Mandat OJK mewajibkan setiap asuransi memiliki Aktuaris FSAI.',
-      'Lulus mata kuliah PTN langsung setara ujian profesi PAI.',
-      'Persaingan UTBK ketat, butuh Penalaran Matematika > 715.',
+      'Data Resmi PAI: Indonesia baru memiliki ~532 FSAI & ~285 ASAI aktif (sangat langka).',
+      'Kuliah di PTN mitra PAI otomatis menyetarakan 5–7 mata ujian profesi ASAI.',
+      'Rerata UTBK lolos SNBT tinggi: UI (~742), ITB FMIPA-M (~735), UGM (692,44).',
     ],
   },
   {
@@ -709,10 +612,10 @@ export const MAJORS_DATA: MajorProfile[] = [
       'Senang mengubah angka menjadi rekomendasi kebijakan',
     ],
     specialRequirements: {
-      utbkAvgRange: [665, 735],
+      utbkAvgRange: [665, 730],
       minMathReasoning: 690,
       minQuantitative: 680,
-      snbpSupportingSubjects: ['Matematika Lanjut', 'Matematika Wajib', 'Ekonomi / Fisika'],
+      snbpSupportingSubjects: ['Matematika Tingkat Lanjut', 'Matematika Wajib', 'Ekonomi / Fisika'],
       physicalAndHealthNotes: 'Tidak mensyaratkan bebas buta warna ketat',
       certificationOrSpecialTest: 'Kuat dengan keahlian R, Python, dan analisis survei',
       codingIntensity: 68,
@@ -872,40 +775,40 @@ export const MAJORS_DATA: MajorProfile[] = [
       {
         role: 'Decision Scientist & Market Researcher',
         industry: 'Tech Unicorn, FMCG & E-Commerce',
-        entrySalaryRp: 'Rp 9 – 16 Jt',
-        seniorSalaryRp: 'Rp 30 – 65 Jt',
-        demandGrowth2030: '+27%',
-        coreSkill: 'A/B Testing & Inferensi Kausal',
+        entrySalaryRp: 'Rp 8 – 15 Jt',
+        seniorSalaryRp: 'Rp 28 – 60 Jt',
+        demandGrowth2030: '+41% (WEF)',
+        coreSkill: 'A/B Testing, Desain Survei & Inferensi Kausal',
       },
       {
-        role: 'Biostatistician & Clinical Analyst',
-        industry: 'Farmasi Global & Riset Medis',
-        entrySalaryRp: 'Rp 10 – 17 Jt',
-        seniorSalaryRp: 'Rp 32 – 70 Jt',
-        demandGrowth2030: '+30%',
+        role: 'Biostatistician & Clinical Trial Analyst',
+        industry: 'Farmasi Global, Rumah Sakit & Riset Klinis',
+        entrySalaryRp: 'Rp 9 – 16 Jt',
+        seniorSalaryRp: 'Rp 30 – 65 Jt',
+        demandGrowth2030: '+38% (WEF)',
         coreSkill: 'Desain Uji Klinis & Analisis Survival',
       },
       {
-        role: 'Statistisi Ahli & Analis Kebijakan',
+        role: 'Statistisi Ahli & Ekonom Kuantitatif',
         industry: 'BPS, Bank Indonesia & Kementerian',
-        entrySalaryRp: 'Rp 9 – 15 Jt',
-        seniorSalaryRp: 'Rp 25 – 55 Jt',
-        demandGrowth2030: '+22%',
+        entrySalaryRp: 'Rp 8 – 14 Jt',
+        seniorSalaryRp: 'Rp 25 – 52 Jt',
+        demandGrowth2030: '+30% (BPS/BI)',
         coreSkill: 'Metodologi Sensus & Ekonometrika Makro',
       },
       {
         role: 'Quality Assurance & Six Sigma Lead',
-        industry: 'Otomotif, Energi & Manufaktur',
-        entrySalaryRp: 'Rp 9 – 14 Jt',
-        seniorSalaryRp: 'Rp 28 – 60 Jt',
-        demandGrowth2030: '+20%',
+        industry: 'Otomotif, Energi & Manufaktur Presisi',
+        entrySalaryRp: 'Rp 8 – 13 Jt',
+        seniorSalaryRp: 'Rp 25 – 55 Jt',
+        demandGrowth2030: '+26% (WEF)',
         coreSkill: 'Kontrol Kualitas Statistik & Reliabilitas',
       },
     ],
     teacherTalkingPoints: [
-      'Unggul di metodologi survei, uji klinis, dan kausalitas.',
-      'IPB dan UGM adalah pelopor Statistika tertua di Indonesia.',
-      'Lulusannya fleksibel masuk ke posisi Data Scientist.',
+      'Rerata UTBK SNBT tinggi di PTN favorit: UGM (708,26), UNAIR (704,47), IPB (700,76).',
+      'IPB (1968) dan UGM adalah pelopor prodi Statistika tertua di Indonesia.',
+      'Lulusannya sangat fleksibel berkarier sebagai Data Scientist maupun Ekonom.',
     ],
   },
   {
@@ -925,10 +828,10 @@ export const MAJORS_DATA: MajorProfile[] = [
       'Senang mengubah data mentah menjadi produk bisnis',
     ],
     specialRequirements: {
-      utbkAvgRange: [680, 745],
+      utbkAvgRange: [675, 735],
       minMathReasoning: 700,
       minQuantitative: 695,
-      snbpSupportingSubjects: ['Matematika Lanjut', 'Informatika / TIK', 'Matematika Wajib'],
+      snbpSupportingSubjects: ['Matematika Tingkat Lanjut', 'Informatika / TIK', 'Matematika Wajib'],
       physicalAndHealthNotes: 'Umumnya tidak mensyaratkan bebas buta warna total',
       certificationOrSpecialTest: 'Portofolio proyek Python, SQL, dan dashboard data',
       codingIntensity: 88,
@@ -1086,42 +989,42 @@ export const MAJORS_DATA: MajorProfile[] = [
     ],
     careers: [
       {
-        role: 'Data Scientist',
+        role: 'Big Data Specialist & Data Engineer',
+        industry: 'Cloud, Fintech & Perbankan (#1 WEF 2025)',
+        entrySalaryRp: 'Rp 10 – 18 Jt',
+        seniorSalaryRp: 'Rp 35 – 75+ Jt',
+        demandGrowth2030: '+113% (WEF #1)',
+        coreSkill: 'Apache Spark, Data Lakehouse & ETL Pipeline',
+      },
+      {
+        role: 'Data Scientist & Predictive Modeler',
         industry: 'Tech Unicorn, Bank Digital & Telko',
-        entrySalaryRp: 'Rp 12 – 22 Jt',
-        seniorSalaryRp: 'Rp 40 – 90+ Jt',
-        demandGrowth2030: '+38%',
-        coreSkill: 'Machine Learning, Python & Eksperimen',
+        entrySalaryRp: 'Rp 10 – 20 Jt',
+        seniorSalaryRp: 'Rp 35 – 80 Jt',
+        demandGrowth2030: '+41% (WEF)',
+        coreSkill: 'Machine Learning, Python & Eksperimen Bisnis',
       },
       {
-        role: 'Data Engineer & Big Data Architect',
-        industry: 'Cloud Provider, Fintech & Korporasi',
-        entrySalaryRp: 'Rp 12 – 20 Jt',
-        seniorSalaryRp: 'Rp 38 – 85 Jt',
-        demandGrowth2030: '+40%',
-        coreSkill: 'Apache Spark, Data Warehouse & ETL',
+        role: 'Data Warehousing & BI Architect',
+        industry: 'Ritel Modern, FMCG & E-Commerce',
+        entrySalaryRp: 'Rp 8 – 15 Jt',
+        seniorSalaryRp: 'Rp 28 – 58 Jt',
+        demandGrowth2030: '+49% (WEF)',
+        coreSkill: 'SQL Lanjut, Cloud Warehouse & Strategi KPI',
       },
       {
-        role: 'Business Intelligence Engineer',
-        industry: 'Ritel Modern, FMCG & Logistik',
-        entrySalaryRp: 'Rp 9 – 16 Jt',
-        seniorSalaryRp: 'Rp 28 – 60 Jt',
-        demandGrowth2030: '+31%',
-        coreSkill: 'SQL Lanjut, Dashboard & Strategi KPI',
-      },
-      {
-        role: 'Fraud & Risk Data Scientist',
-        industry: 'Payment Gateway & Asuransi Digital',
-        entrySalaryRp: 'Rp 11 – 19 Jt',
-        seniorSalaryRp: 'Rp 35 – 75 Jt',
-        demandGrowth2030: '+34%',
+        role: 'Fraud & Financial Data Scientist',
+        industry: 'Payment Gateway, OJK & Asuransi Digital',
+        entrySalaryRp: 'Rp 10 – 17 Jt',
+        seniorSalaryRp: 'Rp 32 – 70 Jt',
+        demandGrowth2030: '+93% (Fintech WEF)',
         coreSkill: 'Deteksi Anomali Transaksi Real-Time',
       },
     ],
     teacherTalkingPoints: [
-      'Jembatan resmi antara Statistika FMIPA dan Ilmu Komputer.',
-      'Tersedia sebagai prodi mandiri di ITS, UNAIR, IPB, UB, UNS.',
-      'Kuota masih terbatas sehingga rasio keketatan sangat tinggi (<5%).',
+      'WEF Future of Jobs 2025 menempatkan Big Data Specialist di Peringkat #1 (+113%).',
+      'Tersedia mandiri di ITS (FSAD), UNAIR (FTMM, rerata UTBK 698,33), IPB (SSMI), UB, UNS.',
+      'Di UI dan UGM, keilmuan Sains Data terintegrasi di dalam S1 Statistika & Ilmu Komputer.',
     ],
   },
   {
@@ -1141,12 +1044,12 @@ export const MAJORS_DATA: MajorProfile[] = [
       'Antusias dengan robotika, visi komputer, dan LLM',
     ],
     specialRequirements: {
-      utbkAvgRange: [695, 765],
+      utbkAvgRange: [690, 760],
       minMathReasoning: 720,
       minQuantitative: 710,
-      snbpSupportingSubjects: ['Matematika Lanjut', 'Informatika / Fisika', 'Matematika Wajib'],
-      physicalAndHealthNotes: 'Jalur robotika mensyaratkan bebas buta warna',
-      certificationOrSpecialTest: 'Unggul dengan portofolio koding dan olimpiade informatika',
+      snbpSupportingSubjects: ['Matematika Tingkat Lanjut', 'Informatika / Fisika', 'Matematika Wajib'],
+      physicalAndHealthNotes: 'Jalur robotika (UNAIR/ITS) mensyaratkan bebas buta warna',
+      certificationOrSpecialTest: 'Unggul dengan portofolio koding dan OSN Informatika/Matematika',
       codingIntensity: 96,
       mathAbstraction: 85,
       businessFinanceFocus: 60,
@@ -1302,42 +1205,42 @@ export const MAJORS_DATA: MajorProfile[] = [
     ],
     careers: [
       {
-        role: 'AI / Machine Learning Engineer',
-        industry: 'Big Tech Global & Unicorn Digital',
-        entrySalaryRp: 'Rp 14 – 25 Jt',
-        seniorSalaryRp: 'Rp 45 – 110+ Jt',
-        demandGrowth2030: '+45%',
-        coreSkill: 'PyTorch, Deep Learning & LLM Systems',
+        role: 'AI & Machine Learning Specialist',
+        industry: 'Big Tech, Perbankan & Unicorn (WEF 2025)',
+        entrySalaryRp: 'Rp 12 – 24 Jt',
+        seniorSalaryRp: 'Rp 35 – 85+ Jt',
+        demandGrowth2030: '+82% (WEF #3)',
+        coreSkill: 'PyTorch, Deep Learning & Arsitektur Model',
+      },
+      {
+        role: 'NLP & Generative AI Engineer',
+        industry: 'Enterprise SaaS, Fintech & Telekomunikasi',
+        entrySalaryRp: 'Rp 12 – 22 Jt',
+        seniorSalaryRp: 'Rp 35 – 80 Jt',
+        demandGrowth2030: '+82% (WEF)',
+        coreSkill: 'Large Language Models (LLM), RAG & Fine-Tuning',
       },
       {
         role: 'Computer Vision & Robotics Engineer',
-        industry: 'Otomotif Otonom, MedTech & Pertahanan',
-        entrySalaryRp: 'Rp 12 – 22 Jt',
-        seniorSalaryRp: 'Rp 40 – 90 Jt',
-        demandGrowth2030: '+39%',
-        coreSkill: 'Deteksi Visual 3D & Kendali Otonom',
-      },
-      {
-        role: 'NLP & Generative AI Architect',
-        industry: 'Perbankan, Enterprise SaaS & Telko',
-        entrySalaryRp: 'Rp 13 – 24 Jt',
-        seniorSalaryRp: 'Rp 42 – 95 Jt',
-        demandGrowth2030: '+42%',
-        coreSkill: 'Arsitektur Transformer & Agen Cerdas',
+        industry: 'Otomasi Industri, MedTech & Pertahanan',
+        entrySalaryRp: 'Rp 10 – 19 Jt',
+        seniorSalaryRp: 'Rp 32 – 70 Jt',
+        demandGrowth2030: '+57% (WEF)',
+        coreSkill: 'Deteksi Visual 3D, ROS2 & Kendali Otonom',
       },
       {
         role: 'AI Research Scientist',
-        industry: 'Laboratorium R&D Global & Nasional',
-        entrySalaryRp: 'Rp 15 – 26 Jt',
-        seniorSalaryRp: 'Rp 50 – 120+ Jt',
-        demandGrowth2030: '+36%',
-        coreSkill: 'Matematika Optimasi & Desain Model Baru',
+        industry: 'Laboratorium R&D Global & Korporasi',
+        entrySalaryRp: 'Rp 14 – 25 Jt',
+        seniorSalaryRp: 'Rp 45 – 100+ Jt',
+        demandGrowth2030: '+65% (WEF)',
+        coreSkill: 'Matematika Optimasi Tensor & Algoritma Baru',
       },
     ],
     teacherTalkingPoints: [
-      'Bukan belajar cara pakai AI, tapi merancang algoritmanya.',
-      'Dibuka resmi di UI, UGM, ITS, IPB, dan UNAIR.',
-      'Alternatif cerdas: masuk Matematika/Statistika dengan peminatan AI.',
+      'WEF Future of Jobs 2025: AI & ML Specialist tumbuh +82% hingga tahun 2030.',
+      'Prodi S1 khusus dibuka di ITS (Rekayasa AI), UNAIR (Robotika & AI), IPB (SSMI), serta Fasilkom UI/FMIPA UGM.',
+      'Jalur strategis: S1 Matematika/Statistika FMIPA merupakan fondasi inti riset AI.',
     ],
   },
 ];
@@ -1617,48 +1520,48 @@ export const UNIVERSITIES_PTN: UniversityPTN[] = [
         programNameOfficial: 'S1 Matematika',
         facultyDepartment: 'FMIPA UI',
         accreditation: 'Unggul · ASIIN',
-        dayaTampung2026: 24,
-        peminat2025: 401,
-        keketatan2025Percent: 5.99,
+        dayaTampung2026: 30,
+        peminat2025: 315,
+        keketatan2025Percent: 9.52,
         snbpDayaTampung2026: 20,
         snbpPeminat2025: 258,
-        passingGradeHistory: { year2022: 678, year2023: 686, year2024: 694, year2025: 702, projected2026: 706 },
+        passingGradeHistory: { year2022: 665, year2023: 671, year2024: 684, year2025: 692, projected2026: 698 },
       },
       {
         majorId: 'aktuaria',
         programNameOfficial: 'S1 Ilmu Aktuaria',
         facultyDepartment: 'FMIPA UI',
         accreditation: 'Unggul · 7 Modul PAI',
-        dayaTampung2026: 24,
-        peminat2025: 685,
-        keketatan2025Percent: 3.50,
+        dayaTampung2026: 26,
+        peminat2025: 519,
+        keketatan2025Percent: 5.01,
         snbpDayaTampung2026: 20,
         snbpPeminat2025: 490,
-        passingGradeHistory: { year2022: 718, year2023: 726, year2024: 735, year2025: 742, projected2026: 746 },
+        passingGradeHistory: { year2022: 718, year2023: 728, year2024: 738, year2025: 745, projected2026: 750 },
       },
       {
         majorId: 'statistika',
         programNameOfficial: 'S1 Statistika',
         facultyDepartment: 'FMIPA UI',
         accreditation: 'Unggul · ASIIN',
-        dayaTampung2026: 24,
-        peminat2025: 519,
-        keketatan2025Percent: 4.62,
+        dayaTampung2026: 26,
+        peminat2025: 520,
+        keketatan2025Percent: 5.00,
         snbpDayaTampung2026: 20,
         snbpPeminat2025: 382,
-        passingGradeHistory: { year2022: 702, year2023: 709, year2024: 716, year2025: 724, projected2026: 728 },
+        passingGradeHistory: { year2022: 702, year2023: 710, year2024: 718, year2025: 725, projected2026: 730 },
       },
       {
         majorId: 'ai',
-        programNameOfficial: 'S1 Kecerdasan Artifisial',
+        programNameOfficial: 'S1 Ilmu Komputer (Fokus AI & Sains Data)',
         facultyDepartment: 'Fasilkom UI',
-        accreditation: 'Unggul · Internasional',
-        dayaTampung2026: 18,
-        peminat2025: 780,
-        keketatan2025Percent: 2.31,
-        snbpDayaTampung2026: 12,
-        snbpPeminat2025: 510,
-        passingGradeHistory: { year2022: 730, year2023: 738, year2024: 748, year2025: 755, projected2026: 760 },
+        accreditation: 'Unggul · IABEE',
+        dayaTampung2026: 49,
+        peminat2025: 1470,
+        keketatan2025Percent: 3.33,
+        snbpDayaTampung2026: 33,
+        snbpPeminat2025: 1120,
+        passingGradeHistory: { year2022: 735, year2023: 742, year2024: 752, year2025: 758, projected2026: 764 },
       },
     ],
   },
@@ -1668,10 +1571,10 @@ export const UNIVERSITIES_PTN: UniversityPTN[] = [
     name: 'Institut Teknologi Bandung',
     city: 'Bandung, Jawa Barat',
     facultyName: 'FMIPA-Matematika (FMIPA-M)',
-    departmentName: 'Kelompok Keilmuan Matematika, Aktuaria & Statistika',
+    departmentName: 'Tahap Persiapan Bersama (TPB) Matematika & Aktuaria',
     establishedYear: 1947,
-    campusEnvironmentDesc: 'Kampus ikonik Jl. Ganesha Bandung dengan atmosfer riset sains dan rekayasa.',
-    departmentBuildingHighlight: 'Gedung Center for Advanced Sciences (CAS) menjadi pusat riset pemodelan dan aktuaria.',
+    campusEnvironmentDesc: 'Kampus ikonik Jl. Ganesha Bandung dengan sistem masuk Fakultas (FMIPA-Matematika).',
+    departmentBuildingHighlight: 'Penerimaan SNBT melalui FMIPA-M (kuota 55 kursi), penjurusan Matematika/Aktuaria di Tahun ke-2.',
     labFacilities: [
       'Gedung Center for Advanced Sciences (CAS)',
       'Lab Matematika Industri & Keuangan',
@@ -1690,7 +1593,7 @@ export const UNIVERSITIES_PTN: UniversityPTN[] = [
     programs: [
       {
         majorId: 'matematika',
-        programNameOfficial: 'S1 Matematika (FMIPA-M)',
+        programNameOfficial: 'FMIPA-Matematika (Jalur S1 Matematika)',
         facultyDepartment: 'FMIPA ITB',
         accreditation: 'Unggul · ASIIN',
         dayaTampung2026: 55,
@@ -1698,31 +1601,31 @@ export const UNIVERSITIES_PTN: UniversityPTN[] = [
         keketatan2025Percent: 7.41,
         snbpDayaTampung2026: 50,
         snbpPeminat2025: 615,
-        passingGradeHistory: { year2022: 695, year2023: 704, year2024: 712, year2025: 718, projected2026: 722 },
+        passingGradeHistory: { year2022: 688, year2023: 694, year2024: 705, year2025: 712, projected2026: 718 },
       },
       {
         majorId: 'aktuaria',
-        programNameOfficial: 'S1 Aktuaria (FMIPA-M)',
+        programNameOfficial: 'FMIPA-Matematika (Jalur S1 Aktuaria)',
         facultyDepartment: 'FMIPA ITB',
-        accreditation: 'Unggul · Mitra PAI',
-        dayaTampung2026: 35,
-        peminat2025: 890,
-        keketatan2025Percent: 3.93,
-        snbpDayaTampung2026: 30,
-        snbpPeminat2025: 670,
-        passingGradeHistory: { year2022: 724, year2023: 732, year2024: 740, year2025: 748, projected2026: 752 },
+        accreditation: 'Unggul · 7 Modul PAI',
+        dayaTampung2026: 55,
+        peminat2025: 742,
+        keketatan2025Percent: 7.41,
+        snbpDayaTampung2026: 50,
+        snbpPeminat2025: 615,
+        passingGradeHistory: { year2022: 715, year2023: 724, year2024: 734, year2025: 742, projected2026: 748 },
       },
       {
         majorId: 'statistika',
-        programNameOfficial: 'Jalur Statistika & Sains Data',
+        programNameOfficial: 'Kelompok Keilmuan Statistika (FMIPA-M)',
         facultyDepartment: 'FMIPA ITB',
         accreditation: 'Unggul · ASIIN',
         dayaTampung2026: 30,
-        peminat2025: 620,
-        keketatan2025Percent: 4.84,
+        peminat2025: 580,
+        keketatan2025Percent: 5.17,
         snbpDayaTampung2026: 25,
         snbpPeminat2025: 480,
-        passingGradeHistory: { year2022: 705, year2023: 714, year2024: 721, year2025: 728, projected2026: 732 },
+        passingGradeHistory: { year2022: 695, year2023: 702, year2024: 712, year2025: 720, projected2026: 725 },
       },
     ],
   },
@@ -1735,7 +1638,7 @@ export const UNIVERSITIES_PTN: UniversityPTN[] = [
     departmentName: 'Departemen Matematika & Departemen Ilmu Komputer/AI',
     establishedYear: 1955,
     campusEnvironmentDesc: 'Kawasan akademik Bulaksumur dan Sekip Utara Yogyakarta yang asri dan kolaboratif.',
-    departmentBuildingHighlight: 'Satu fakultas FMIPA menaungi langsung Matematika, Statistika, Aktuaria, dan AI.',
+    departmentBuildingHighlight: 'Satu fakultas FMIPA menaungi langsung Matematika, Statistika, Ilmu Aktuaria, dan Ilmu Komputer/AI.',
     labFacilities: [
       'Lab Analisis, Aljabar & Matematika Terapan',
       'Lab Statistika & Komputasi Aktuaria',
@@ -1758,39 +1661,39 @@ export const UNIVERSITIES_PTN: UniversityPTN[] = [
         facultyDepartment: 'FMIPA UGM',
         accreditation: 'Unggul · ASIIN',
         dayaTampung2026: 24,
-        peminat2025: 348,
-        keketatan2025Percent: 6.90,
+        peminat2025: 324,
+        keketatan2025Percent: 7.41,
         snbpDayaTampung2026: 24,
         snbpPeminat2025: 312,
-        passingGradeHistory: { year2022: 675, year2023: 682, year2024: 690, year2025: 696, projected2026: 700 },
+        passingGradeHistory: { year2022: 680, year2023: 688, year2024: 694, year2025: 700, projected2026: 705 },
       },
       {
         majorId: 'aktuaria',
         programNameOfficial: 'S1 Ilmu Aktuaria',
         facultyDepartment: 'FMIPA UGM',
         accreditation: 'Unggul · Mitra PAI',
-        dayaTampung2026: 18,
-        peminat2025: 590,
-        keketatan2025Percent: 3.05,
+        dayaTampung2026: 15,
+        peminat2025: 540,
+        keketatan2025Percent: 2.78,
         snbpDayaTampung2026: 15,
         snbpPeminat2025: 445,
-        passingGradeHistory: { year2022: 712, year2023: 720, year2024: 729, year2025: 736, projected2026: 740 },
+        passingGradeHistory: { year2022: 686, year2023: 692, year2024: 708, year2025: 718, projected2026: 725 },
       },
       {
         majorId: 'statistika',
         programNameOfficial: 'S1 Statistika',
         facultyDepartment: 'FMIPA UGM',
         accreditation: 'Unggul · ASIIN',
-        dayaTampung2026: 24,
-        peminat2025: 545,
-        keketatan2025Percent: 4.40,
+        dayaTampung2026: 18,
+        peminat2025: 605,
+        keketatan2025Percent: 2.98,
         snbpDayaTampung2026: 18,
         snbpPeminat2025: 460,
-        passingGradeHistory: { year2022: 698, year2023: 706, year2024: 715, year2025: 722, projected2026: 726 },
+        passingGradeHistory: { year2022: 700, year2023: 708, year2024: 716, year2025: 723, projected2026: 728 },
       },
       {
         majorId: 'ai',
-        programNameOfficial: 'S1 Kecerdasan Artifisial / Ilkom',
+        programNameOfficial: 'S1 Kecerdasan Artifisial / Ilmu Komputer',
         facultyDepartment: 'FMIPA UGM',
         accreditation: 'Unggul · ASIIN',
         dayaTampung2026: 27,
@@ -1798,7 +1701,7 @@ export const UNIVERSITIES_PTN: UniversityPTN[] = [
         keketatan2025Percent: 2.18,
         snbpDayaTampung2026: 24,
         snbpPeminat2025: 890,
-        passingGradeHistory: { year2022: 722, year2023: 731, year2024: 740, year2025: 749, projected2026: 754 },
+        passingGradeHistory: { year2022: 712, year2023: 719, year2024: 730, year2025: 740, projected2026: 746 },
       },
     ],
   },
@@ -1811,7 +1714,7 @@ export const UNIVERSITIES_PTN: UniversityPTN[] = [
     departmentName: 'Matematika, Statistika, Aktuaria, Sains Data & Rekayasa AI',
     establishedYear: 1965,
     campusEnvironmentDesc: 'Kampus teknologi Sukolilo Surabaya yang lengkap memiliki kelima jurusan secara mandiri.',
-    departmentBuildingHighlight: 'Fakultas Sains dan Analitika Data (FSAD) ITS memiliki kuota Matematika terbesar (80 kursi).',
+    departmentBuildingHighlight: 'Fakultas Sains dan Analitika Data (FSAD) ITS memiliki kuota SNBT Matematika terbesar (80 kursi).',
     labFacilities: [
       'Lab Matematika Komputasi & Sains Data FSAD',
       'Lab Pemodelan Aktuaria & Manajemen Risiko',
@@ -1834,11 +1737,11 @@ export const UNIVERSITIES_PTN: UniversityPTN[] = [
         facultyDepartment: 'FSAD ITS',
         accreditation: 'Unggul · ASIIN',
         dayaTampung2026: 80,
-        peminat2025: 620,
-        keketatan2025Percent: 12.90,
+        peminat2025: 239,
+        keketatan2025Percent: 33.47,
         snbpDayaTampung2026: 60,
         snbpPeminat2025: 410,
-        passingGradeHistory: { year2022: 652, year2023: 658, year2024: 665, year2025: 672, projected2026: 676 },
+        passingGradeHistory: { year2022: 635, year2023: 641, year2024: 650, year2025: 658, projected2026: 664 },
       },
       {
         majorId: 'aktuaria',
@@ -1858,23 +1761,23 @@ export const UNIVERSITIES_PTN: UniversityPTN[] = [
         facultyDepartment: 'FSAD ITS',
         accreditation: 'Unggul · ASIIN',
         dayaTampung2026: 60,
-        peminat2025: 695,
-        keketatan2025Percent: 8.63,
+        peminat2025: 566,
+        keketatan2025Percent: 10.60,
         snbpDayaTampung2026: 40,
         snbpPeminat2025: 512,
-        passingGradeHistory: { year2022: 672, year2023: 679, year2024: 686, year2025: 692, projected2026: 696 },
+        passingGradeHistory: { year2022: 666, year2023: 673, year2024: 682, year2025: 689, projected2026: 694 },
       },
       {
         majorId: 'sains-data',
         programNameOfficial: 'S1 Sains Data',
         facultyDepartment: 'FSAD ITS',
         accreditation: 'Baik Sekali / Unggul',
-        dayaTampung2026: 18,
-        peminat2025: 540,
-        keketatan2025Percent: 3.33,
+        dayaTampung2026: 15,
+        peminat2025: 510,
+        keketatan2025Percent: 2.94,
         snbpDayaTampung2026: 12,
         snbpPeminat2025: 390,
-        passingGradeHistory: { year2022: 688, year2023: 696, year2024: 708, year2025: 716, projected2026: 722 },
+        passingGradeHistory: { year2022: 684, year2023: 694, year2024: 704, year2025: 712, projected2026: 718 },
       },
       {
         majorId: 'ai',
@@ -1896,10 +1799,10 @@ export const UNIVERSITIES_PTN: UniversityPTN[] = [
     name: 'IPB University',
     city: 'Bogor, Jawa Barat',
     facultyName: 'Sekolah Sains Data, Matematika & Informatika (SSMI)',
-    departmentName: 'Statistika, Matematika, Aktuaria & Kecerdasan Buatan',
+    departmentName: 'Statistika & Sains Data, Matematika, Aktuaria & AI',
     establishedYear: 1963,
     campusEnvironmentDesc: 'Kampus hijau Dramaga Bogor yang bertransformasi menjadi Sekolah Sains Data (SSMI).',
-    departmentBuildingHighlight: 'Pelopor prodi Statistika pertama di Indonesia, kini lengkap dengan Sains Data & AI.',
+    departmentBuildingHighlight: 'Pelopor prodi Statistika pertama di Indonesia (1968), kini menaungi S1 Statistika & Sains Data.',
     labFacilities: [
       'Lab Statistika & Sains Data SSMI IPB',
       'Lab Aktuaria & Pemodelan Risiko',
@@ -1921,57 +1824,57 @@ export const UNIVERSITIES_PTN: UniversityPTN[] = [
         programNameOfficial: 'S1 Matematika',
         facultyDepartment: 'SSMI IPB',
         accreditation: 'Unggul · ASIIN',
-        dayaTampung2026: 45,
-        peminat2025: 460,
-        keketatan2025Percent: 9.78,
+        dayaTampung2026: 32,
+        peminat2025: 324,
+        keketatan2025Percent: 9.88,
         snbpDayaTampung2026: 45,
         snbpPeminat2025: 395,
-        passingGradeHistory: { year2022: 650, year2023: 658, year2024: 664, year2025: 670, projected2026: 674 },
+        passingGradeHistory: { year2022: 640, year2023: 645, year2024: 656, year2025: 664, projected2026: 670 },
       },
       {
         majorId: 'aktuaria',
         programNameOfficial: 'S1 Aktuaria',
         facultyDepartment: 'SSMI IPB',
         accreditation: 'Unggul · Mitra PAI',
-        dayaTampung2026: 39,
-        peminat2025: 640,
-        keketatan2025Percent: 6.09,
+        dayaTampung2026: 25,
+        peminat2025: 480,
+        keketatan2025Percent: 5.21,
         snbpDayaTampung2026: 32,
         snbpPeminat2025: 520,
-        passingGradeHistory: { year2022: 685, year2023: 693, year2024: 701, year2025: 708, projected2026: 713 },
+        passingGradeHistory: { year2022: 660, year2023: 667, year2024: 688, year2025: 698, projected2026: 705 },
       },
       {
         majorId: 'statistika',
         programNameOfficial: 'S1 Statistika dan Sains Data',
         facultyDepartment: 'SSMI IPB',
         accreditation: 'Unggul · ASIIN',
-        dayaTampung2026: 48,
-        peminat2025: 845,
-        keketatan2025Percent: 5.68,
+        dayaTampung2026: 36,
+        peminat2025: 858,
+        keketatan2025Percent: 4.20,
         snbpDayaTampung2026: 48,
         snbpPeminat2025: 792,
-        passingGradeHistory: { year2022: 688, year2023: 695, year2024: 704, year2025: 712, projected2026: 716 },
+        passingGradeHistory: { year2022: 692, year2023: 701, year2024: 708, year2025: 715, projected2026: 720 },
       },
       {
         majorId: 'sains-data',
-        programNameOfficial: 'Jalur Sains Data (SSMI)',
+        programNameOfficial: 'S1 Statistika & Sains Data (Peminatan Sains Data)',
         facultyDepartment: 'SSMI IPB',
         accreditation: 'Unggul · ASIIN',
-        dayaTampung2026: 29,
-        peminat2025: 610,
-        keketatan2025Percent: 4.75,
-        snbpDayaTampung2026: 28,
-        snbpPeminat2025: 540,
-        passingGradeHistory: { year2022: 686, year2023: 694, year2024: 702, year2025: 710, projected2026: 715 },
+        dayaTampung2026: 36,
+        peminat2025: 858,
+        keketatan2025Percent: 4.20,
+        snbpDayaTampung2026: 48,
+        snbpPeminat2025: 792,
+        passingGradeHistory: { year2022: 692, year2023: 701, year2024: 708, year2025: 715, projected2026: 720 },
       },
       {
         majorId: 'ai',
         programNameOfficial: 'S1 Kecerdasan Buatan',
         facultyDepartment: 'SSMI IPB',
         accreditation: 'Baik Sekali / Unggul',
-        dayaTampung2026: 44,
-        peminat2025: 790,
-        keketatan2025Percent: 5.57,
+        dayaTampung2026: 30,
+        peminat2025: 690,
+        keketatan2025Percent: 4.35,
         snbpDayaTampung2026: 28,
         snbpPeminat2025: 615,
         passingGradeHistory: { year2022: 684, year2023: 692, year2024: 701, year2025: 709, projected2026: 714 },
@@ -1987,7 +1890,7 @@ export const UNIVERSITIES_PTN: UniversityPTN[] = [
     departmentName: 'Matematika, Statistika, Teknologi Sains Data & Robotika AI',
     establishedYear: 1982,
     campusEnvironmentDesc: 'Kampus C Mulyorejo Surabaya dengan Gedung Nano FTMM yang berfokus pada teknologi masa depan.',
-    departmentBuildingHighlight: 'Pelopor prodi S1 Teknologi Sains Data dan S1 Teknik Robotika & Kecerdasan Buatan.',
+    departmentBuildingHighlight: 'Pelopor prodi S1 Teknologi Sains Data (rerata UTBK 698,33) dan S1 Statistika (rerata UTBK 704,47).',
     labFacilities: [
       'Gedung Nano FTMM Kampus C UNAIR',
       'Lab Matematika & Biostatistika FST',
@@ -2026,7 +1929,7 @@ export const UNIVERSITIES_PTN: UniversityPTN[] = [
         keketatan2025Percent: 6.10,
         snbpDayaTampung2026: 24,
         snbpPeminat2025: 475,
-        passingGradeHistory: { year2022: 662, year2023: 670, year2024: 678, year2025: 685, projected2026: 690 },
+        passingGradeHistory: { year2022: 682, year2023: 694, year2024: 704, year2025: 708, projected2026: 712 },
       },
       {
         majorId: 'sains-data',
@@ -2038,11 +1941,11 @@ export const UNIVERSITIES_PTN: UniversityPTN[] = [
         keketatan2025Percent: 4.71,
         snbpDayaTampung2026: 24,
         snbpPeminat2025: 580,
-        passingGradeHistory: { year2022: 670, year2023: 680, year2024: 690, year2025: 698, projected2026: 704 },
+        passingGradeHistory: { year2022: 680, year2023: 690, year2024: 698, year2025: 704, projected2026: 709 },
       },
       {
         majorId: 'ai',
-        programNameOfficial: 'S1 Teknik Robotika & AI',
+        programNameOfficial: 'S1 Teknik Robotika & Kecerdasan Buatan',
         facultyDepartment: 'FTMM UNAIR',
         accreditation: 'Baik Sekali / Unggul',
         dayaTampung2026: 30,

@@ -30,3 +30,14 @@
     font-variant-numeric: tabular-nums;
   }
 }
+
+.perspective-stage {
+  perspective: 1600px;
+  perspective-origin: 50% 50%;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+}
