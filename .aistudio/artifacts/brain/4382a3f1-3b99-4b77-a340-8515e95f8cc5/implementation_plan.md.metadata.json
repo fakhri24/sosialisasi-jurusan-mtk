@@ -1,0 +1,6 @@
+{
+  "summary": "Pembaruan rencana implementasi untuk menambahkan sistem transisi dramatis bergaya Apple Keynote menggunakan Framer Motion, mencakup mode 3D Slide-Cube (perspektif 3D dengan rotasi sumbu Y) dan Fade-Scale sinematik yang dapat dipilih dari bar bawah maupun pintasan keyboard, lengkap dengan animasi muncul bertahap (staggered reveal) pada kartu dan grafik di setiap slide.",
+  "updatedAt": "2026-10-19T08:31:31.803976310Z",
+  "requestFeedback": true,
+  "userFacing": true
+}

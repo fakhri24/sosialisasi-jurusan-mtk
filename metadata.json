@@ -1,0 +1,6 @@
+{
+  "name": "MathSphere FMIPA Deck",
+  "description": "Platform slide presentasi interaktif dan analitik sosialisasi jurusan FMIPA Departemen Matematika (Matematika, Aktuaria, Statistika, Sains Data, dan Artificial Intelligence) dengan data keketatan SNPMB, evolusi lintas zaman, rekomendasi Jika-Maka, dan prediksi kelulusan UTBK.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
